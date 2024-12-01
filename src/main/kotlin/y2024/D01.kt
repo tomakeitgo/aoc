@@ -15,32 +15,31 @@ fun main() {
     partTwo(pairs) // 19457120
 }
 
+private fun partOne(pairs: Sequence<Pair<Int, Int>>) {
+    val left = mutableListOf<Int>()
+    val right = mutableListOf<Int>()
+    pairs.forEach {
+        left.add(it.first)
+        right.add(it.second)
+    }
+    left.sort()
+    right.sort()
+
+    var value = 0
+    left.forEachIndexed { index, i ->
+        value += (i - right[index]).absoluteValue
+    }
+    println(value)
+}
+
 private fun partTwo(pairs: Sequence<Pair<Int, Int>>) {
     val freq = mutableMapOf<Int, Int>()
     pairs.forEach {
-        freq.put(it.second, freq.getOrDefault(it.second, 0) + 1)
+        freq[it.second] = (freq[it.second] ?: 0) + 1
     }
     pairs.map {
         it.first * freq.getOrDefault(it.first, 0)
     }
         .reduce(Int::plus)
         .also(::println)
-}
-
-private fun partOne(pairs: Sequence<Pair<Int, Int>>) {
-    val left = mutableListOf<Int>()
-    val right = mutableListOf<Int>()
-    pairs.forEach {
-        left.add(it.first);
-        right.add(it.second);
-    }
-    left.sort()
-    right.sort()
-
-    var value = 0;
-    left.forEachIndexed { index, i ->
-        value += (i - right[index]).absoluteValue
-    }
-
-    println(value)
 }
