@@ -14,11 +14,8 @@ fun main() {
         }
         .toMutableList()
 
-
     checkSum(partOne(memory.toMutableList())) //6446899523367
     checkSum(partTwo(memory).toMutableList()) //6478232739671
-
-
 }
 
 private fun partTwo(memory: MutableList<Int>): MutableList<Int> {
