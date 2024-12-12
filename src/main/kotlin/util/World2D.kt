@@ -6,12 +6,24 @@ class World2D(val map: Map<Pair<Int, Int>, Char>) {
         return map.values.filter(filter).distinct()
     }
 
-    fun findAll(char: Char): List<Map.Entry<Pair<Int, Int>, Char>> {
-        return map.entries.filter { it.value == char }
+    fun findAll(char: Char): List<Pair<Pair<Int, Int>, Char>> {
+        return map.entries.filter { it.value == char }.map { it.key to it.value }
     }
 
     fun exists(point: Pair<Int, Int>): Boolean {
         return map.containsKey(point)
+    }
+
+    fun matchingPointsInDirection(
+        point: Pair<Int, Int>,
+        directions: List<Pair<Int, Int>>,
+        char: Char
+    ): List<Pair<Pair<Int, Int>, Char>> {
+        return directions
+            .map { it.first + point.first to it.second + point.second }
+            .map { it to map.getOrDefault(it, ' ') }
+            .filter { it.second == char }
+            .toList()
     }
 
     override fun toString(): String {

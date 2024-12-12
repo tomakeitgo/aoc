@@ -16,7 +16,7 @@ private fun partOne(world: World2D) {
         .distinctValues { it != '.' }
         .asSequence()
         .map {
-            it to world.findAll(it).map { it.key }
+            it to world.findAll(it).map { it.first }
         }
         .map {
             it.first to it.second.flatMap { first ->
@@ -42,7 +42,7 @@ private fun partTwo(world: World2D) {
         .distinctValues { it != '.' }
         .asSequence()
         .map {
-            it to world.findAll(it).map { it.key }
+            it to world.findAll(it).map { it.first }
         }
         .map {
             it.first to it.second.flatMap { first ->
