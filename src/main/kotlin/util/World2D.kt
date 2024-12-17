@@ -40,7 +40,13 @@ class World2D(val map: Map<Pair<Int, Int>, Char>) {
     }
 
     fun findAdjacentDiagAllowOffWorld(point: Pair<Int, Int>): List<Pair<Int, Int>> {
-        return DIRECTIONS_DIAGONALS
+        return DIRECTIONS_WITH_DIAGONALS
+            .map { point.first + it.first to point.second + it.second }
+            .toList()
+    }
+
+    fun findAdjacent(point: Pair<Int, Int>, directions: List<Pair<Int, Int>>): List<Pair<Int, Int>> {
+        return directions
             .map { point.first + it.first to point.second + it.second }
             .toList()
     }
@@ -56,6 +62,7 @@ class World2D(val map: Map<Pair<Int, Int>, Char>) {
             .any { it }
     }
 
+
     override fun toString(): String {
         return "World2D(map=$map)"
     }
@@ -69,8 +76,8 @@ class World2D(val map: Map<Pair<Int, Int>, Char>) {
             1 to 0
         )
 
-        val DIRECTIONS_DIAGONALS = listOf(
-            -1 to -0,
+        val DIRECTIONS_WITH_DIAGONALS = listOf(
+            -1 to -1,
             -1 to 0,
             -1 to 1,
             0 to -1,
@@ -78,6 +85,12 @@ class World2D(val map: Map<Pair<Int, Int>, Char>) {
             1 to -1,
             1 to 0,
             1 to 1
+        )
+        val DIRECTIONS_ONLY_DIAGONALS = listOf(
+            -1 to -1,
+            -1 to 1,
+            1 to -1,
+            1 to 1,
         )
 
         fun fromSequence(sequence: Sequence<String>): World2D {
@@ -92,6 +105,8 @@ class World2D(val map: Map<Pair<Int, Int>, Char>) {
         }
 
         fun printPoints(list: Collection<Pair<Int, Int>>) {
+            if (list.isEmpty()) return
+
             val xMin = list.map { it.first }.min()
             val xMax = list.map { it.first }.max()
 

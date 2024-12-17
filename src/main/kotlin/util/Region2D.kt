@@ -1,6 +1,8 @@
 package com.tomakeitgo.util
 
+import com.tomakeitgo.y2024.main
 import java.util.*
+import kotlin.Comparator
 
 class Region2D(
     val world: World2D,
@@ -33,19 +35,23 @@ class Region2D(
     }
 
     fun sides(char: Char): Int {
-        World2D.printPoints(points)
+        val border = points.flatMap {
+            world.findAdjacent(it, World2D.DIRECTIONS_WITH_DIAGONALS).filter { world.map[it] != char }
+        }.toSet()
 
 
-        val list = points
-            .flatMap {
-                world
-                    .findAdjacentAllowOffWorld(it)
-                    .filter { border -> world.map[border] != char }
-            }.toMutableSet()
+        println("$char")
+        World2D.printPoints(border)
 
-        World2D.printPoints(list)
+        return 0//cs.count()
+    }
 
-        return 0
+    private fun rotate(point: Pair<Int, Int>): Pair<Int, Int> {
+        return Pair(point.second, -point.first)
+    }
+
+    private fun rotate(points: List<Pair<Int, Int>>): List<Pair<Int, Int>> {
+        return points.map { rotate(it) }
     }
 
     override fun toString(): String {
@@ -80,3 +86,17 @@ class Region2D(
         }
     }
 }
+/*
+R  10
+I  4
+I 16
+C 4
+C 22
+F 12
+V 10
+J 12
+E 8
+M 6
+S 6
+ */
+
