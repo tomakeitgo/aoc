@@ -39,11 +39,39 @@ class Region2D(
             world.findAdjacent(it, World2D.DIRECTIONS_WITH_DIAGONALS).filter { world.map[it] != char }
         }.toSet()
 
+        val c1 = rotate(listOf(0 to 0, 1 to 0, 0 to 1))
+        val c2 = rotate(c1)
+        val c3 = rotate(c2)
+        val c4 = rotate(c3)
 
-        println("$char")
+        val toTest = listOf(c1, c2, c3, c4)
+
+        val corners = border.flatMap { potC ->
+
+            toTest.map { rot ->
+                potC to rot
+                    .map { potC.first + it.first to potC.second + it.second }
+                    .all { border.contains(it) }
+            }
+                .filter { it.second }
+                .filter {
+                    world
+                        .findAdjacent(it.first, World2D.DIRECTIONS_ONLY_DIAGONALS)
+                        .any { points.contains(it) }
+                }
+                .map { it.first }
+        }
+
+
+
+        println("$char - ${corners.size}")
+//        World2D.printPoints(points)
+        println(corners)
         World2D.printPoints(border)
+        World2D.printPoints(corners)
+        println("$char - ${corners.size}")
 
-        return 0//cs.count()
+        return corners.size
     }
 
     private fun rotate(point: Pair<Int, Int>): Pair<Int, Int> {
@@ -87,16 +115,16 @@ class Region2D(
     }
 }
 /*
-R  10
-I  4
-I 16
-C 4
-C 22
-F 12
-V 10
-J 12
-E 8
-M 6
-S 6
+R  10 .
+I  4 .
+I 16 15
+C 4 .
+C 22 20
+F 12 11
+V 10 9
+J 12 .
+E 8 .
+M 6 .
+S 6 .
  */
 
